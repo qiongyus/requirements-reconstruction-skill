@@ -1,6 +1,6 @@
 # 条款质量特征（ISO 29148 §5.2）与 EARS 句式
 
-本文件给需求重建产出的**文本层质量判据**：条款写成什么样才算合格。SKILL.md 已定义的三级标注、证据类别组合（`test+code+doc` / `code-only` / `doc-only`）、parity class 三值（`parity-contractual` / `parity-incidental-relied` / `parity-incidental`）、Modality 映射表、自检清单，此处一律不重复；本文件只做两件 SKILL.md 没做的事：把 29148 的九个个体特征与五个集合特征**逐条翻成重建语境下可执行的检查动作**，以及给出条款文本的句式骨架（EARS）。
+本文件给需求重建产出的**文本层质量判据**：条款写成什么样才算合格。SKILL.md 已定义的三级标注、证据类别组合（`test+code+doc` / `code-only` / `doc-only`）、parity class 三值（`parity-contractual` / `parity-incidental-relied` / `parity-incidental`）、Modality 映射表、自检清单，此处一律不重复；本文件只做两件 SKILL.md 没做的事：把 29148 的九个个体特征与五个集合特征**逐条翻成重建语境下可执行的检查动作**，以及给出需求句文本的句式骨架（EARS，用于 `[REQ-*]` 条款与行为观察附录条目）。
 
 ## 取材记录与依据分级
 
@@ -25,15 +25,15 @@
 
 ### 1. Necessary（必要）
 
-> The requirement defines an essential capability, characteristic, constraint and/or quality factor. If it is not included in the set of requirements, a deficiency in capability or characteristic will exist, which cannot be fulfilled by implementing other requirements. The requirement is currently applicable and has not been made obsolete by the passage of time.
-> 【一手·29148 §5.2.5，文档页 12】
+> The requirement defines an essential capability, characteristic, constraint and/or quality factor. If it is not included in the set of requirements, a deficiency in capability or characteristic will exist, which cannot be fulfilled by implementing other requirements. The requirement is currently applicable and has not been made obsolete by the passage of time. Requirements with planned expiration dates or applicability dates are clearly identified.
+> 【一手·29148 §5.2.5，文档页 12，四句全文无省略】
 
-释义：删掉它就会缺一块能力，且这块能力不能由其他条款蕴含；并且它**当下仍然适用**，没有因时间流逝而作废。
+释义：删掉它就会缺一块能力，且这块能力不能由其他条款蕴含；它**当下仍然适用**，没有因时间流逝而作废；有计划失效日期或适用日期的条款要被**清楚标识**出来。
 
 **重建语境下怎么检查**——两个动作：
 
 - **删除测试**：逐条问「把这条 `[REQ-*]` 删掉，重写实现会不会因此丢掉一个调用方能观察到的能力？」丢不掉就说明它被别的条款蕴含了。重建里这类冗余有固定来源：一处代码分支被机械展开成三条断言（判定、日志、返回值各一条），实际只有一条是能力。合并，或降为行为观察附录。
-- **基线可达性复核**：「currently applicable」在重建里的落点是 Source Trace 的基线版本——证据取自已废弃路径（deprecated 标记、默认关闭的 feature flag、不可达的 dead code）的断言**不满足 Necessary**。检查动作：对每条 `code-only` 断言，在 `<upstream>@<baseline>` 上确认该代码路径在默认配置下真的可达；确认不了的进 `## Open Questions`，不要写成条款。
+- **基线可达性复核 + 失效条件显式标识**：定义句的后两句在重建里落到同一处——Source Trace 的基线版本。前者（`currently applicable`）：证据取自已废弃路径（deprecated 标记、默认关闭的 feature flag、不可达的 dead code）的断言**不满足 Necessary**；检查动作是对每条 `code-only` 断言在 `<upstream>@<baseline>` 上确认该代码路径在默认配置下真的可达，确认不了的进 `## Open Questions`，不要写成条款。后者（`planned expiration dates or applicability dates are clearly identified`）：源项目里带明确废弃计划的行为（`Deprecated:` 注释写明移除版本、标注 sunset 日期的 API）**不是不写，而是必须把失效条件写在条款里显式标识**——否则重写实现会照抄一个上游已排期删除的行为，且没人知道它有到期日。
 
 ### 2. Appropriate（层级恰当）
 
@@ -135,19 +135,22 @@ NOTE 2 给了豁免边界【一手·同页】：
 
 **Complete（集合完备）**
 
-> The set of requirements stands alone such that it sufficiently describes the necessary capabilities, characteristics, constraints or quality factors to meet entity needs without needing further information. In addition, the set does not contain any To Be Defined (TBD), To Be Specified (TBS), or To Be Resolved (TBR) clauses.
+> The set of requirements stands alone such that it sufficiently describes the necessary capabilities, characteristics, constraints or quality factors to meet entity needs without needing further information. In addition, the set does not contain any To Be Defined (TBD), To Be Specified (TBS), or To Be Resolved (TBR) clauses. Resolution of the TBx designations may be iterative and there is an acceptable timeframe for TBx items, determined by risks and dependencies.
+> 【一手·29148 §5.2.6，文档页 13，三句全文无省略】
 
-NOTE 2 把话说死了【一手·29148 §5.2.6 NOTE 2，文档页 13】：
+**第三句是禁令的缓和条款，不能漏引**：标准并不禁止 TBx 在演进过程中出现，它允许迭代解决、允许有一个由风险与依赖决定的可接受时限。真正卡死的是判定时点，见 NOTE 2【一手·29148 §5.2.6 NOTE 2，文档页 13】：
 
 > However, the set of requirements cannot be considered complete until all the TBx designated requirements have been resolved.
 
-→ **与本 skill 的【缺口】纪律结构性冲突**：重建产出必然含 `## Open Questions`（TBx 的等价物），且 SKILL.md 明令低置信不确定性不得藏进 prose。所以集合 Complete 在导出时结构上不可能满足。这是第二处结构性不满足。
+→ **与本 skill 的【缺口】纪律结构性冲突**：重建产出必然含 `## Open Questions`（TBx 的等价物），且 SKILL.md 明令低置信不确定性不得藏进 prose。补全第三句后冲突的性质要说得更准：**冲突不在于「产出过程中不许有 TBx」**（标准给了迭代与时限的空间），**而在于重建的 Open Questions 里有一部分原理上不可解**——rationale 与原始 need 不可从代码恢复，它们不是「等待被解决的 TBx」，不存在任何时限能把它们清零。所以集合 Complete 在导出时结构上不可能满足。这是第二处结构性不满足。
 
-但同一条下的 NOTE 3 给了一条对重建**有利**的裁剪依据【一手·29148 §5.2.6 NOTE 3，文档页 13】：
+同一条下的 NOTE 3 提到了一个与重建处境相似的情形【一手·29148 §5.2.6 NOTE 3，文档页 13，两句全文无省略】：
 
 > Adapted and open source software frequently have existing functions that are not utilized in the system of interest. For integrated systems, systems of systems and systems containing COTS components, the requirements for the solution of interest can still be 'complete'.
 
-即：源项目里存在但目标系统用不到的功能面，不覆盖它们不影响「solution of interest」这个集合被称为 complete。这给 SKILL.md「规模警戒」要求的**覆盖率与未覆盖行为面声明**提供了标准依据——未覆盖面必须显式列出（否则读者无从判断 scope），但列出之后不必为它们补条款。
+**逐字读它的两个限定，不要放大**：第一句只是观察（改造过的软件与开源软件常带有目标系统用不到的既有功能）；第二句才是豁免，而豁免有明确的**适用范围限定**——`For integrated systems, systems of systems and systems containing COTS components`，即集成系统、系统之系统、含 COTS 构件的系统。范围之外（例如重写一个独立的单体 CLI 工具）该 NOTE 是否适用，标准没说。且 ISO/IEC/IEEE 文本中 NOTE 是**资料性**内容，本身不是 shall 级规范条款。
+
+【推断，NOTE 为资料性、适用范围限于集成系统/SoS/含 COTS 构件的系统】在重建落在该范围内时（重写目标是把源项目当作一个构件集成进更大的系统，或源项目本身含 COTS/第三方构件），「源项目里存在但目标系统用不到的功能面不覆盖」与 NOTE 3 描述的情形同构，可援引它支持 SKILL.md「规模警戒」的**覆盖率与未覆盖行为面声明**；不在该范围内时，覆盖率声明仍然照做，但依据只是本 skill 约定，**不得声称有标准依据**。两种情形下未覆盖面都必须显式列出（否则读者无从判断 scope），列出之后不必为它们补条款。
 
 **Consistent（一致）**
 
@@ -199,7 +202,9 @@ full conformance 或 tailored conformance。已知的结构性不满足两处：
 （见本产出「验证」一节），门禁通过不构成该项证据。
 
 覆盖率与未覆盖行为面见「覆盖率声明」一节；未被目标系统使用的源项目功能面
-不在本集合范围内（依据 29148 §5.2.6 Complete NOTE 3）。
+不在本集合范围内——此为本产出的范围约定；29148 §5.2.6 Complete NOTE 3 描述
+了同构情形，但该 NOTE 是资料性内容且其豁免限定于集成系统 / 系统之系统 /
+含 COTS 构件的系统，本产出<是否落在该范围内，落在则援引、不落在则删本句后半>。
 ```
 
 ## 三、EARS 句式
@@ -235,15 +240,18 @@ The tool shall write all diagnostic messages to stderr.
 
 > `While <precondition(s)>, the <system name> shall <system response>`
 
-重建语境例句（构造示例，非真实项目引用）：
+重建语境例句（构造示例，非真实项目引用）——**这一条是行为观察附录的条目，不是 `[REQ-*]` 条款**，理由见下：
 
 ```
 While the cache directory is not writable, the tool shall recompute results
 on every invocation.
 ```
 
-证据：`upstream@v1.4.0:internal/cache/store.go:57`；证据类别 `code-only`（无文档、无测试）；parity: 走完五步判定后暂标 `parity-incidental`，并在 `## Open Questions` 留一条依赖存疑。
-适用场合：**静默契约**（尖锐发现 #3）——持续状态下的降级行为，正是 doc 与 test 都不覆盖、重写后最容易静默破坏的一类。
+证据：`upstream@v1.4.0:internal/cache/store.go:57`；证据类别 `code-only`（无文档、无测试）；走完 `contractual-vs-incidental.md` 的五步判定，第 4 步依赖证据未命中，判 `parity-incidental`。
+
+**归位（不要照着写成条款）**：按 SKILL.md Modality 映射表，`parity-incidental` **不写成条款，记入行为观察附录**；`evidence-classes.md` 的推导表同向——无依赖证据的 `code-only` 只能是 `confidence: low` 且不得入条款。所以本例句演示的是**附录条目**的写法：EARS 句式在附录里同样适用（附录条目描述「观察到什么」，条款承诺「必须是什么」，句式相同、地位不同），同时在对应 Candidate Requirement Block 的 `## Open Questions` 留一条「是否存在未查到的下游依赖」。若后续查到可确证的依赖出处（具体 issue 链接、生态用法），改判 `parity-incidental-relied`，再由治理阶段人定升 MUST 还是留 SHOULD——**升格进条款只能由人裁触发，不能由 skill 直接写成 shall**。
+
+适用场合：**静默契约**（尖锐发现 #3）——持续状态下的降级行为，正是 doc 与 test 都不覆盖、重写后最容易静默破坏的一类；SKILL.md 对 #3 的处置也正是「按 parity class 分类后进条款**或**行为观察附录」，本例落在后者。
 
 ### Event driven requirements（关键词 When）
 
@@ -308,7 +316,7 @@ the cache.
 
 ### 三条接口纪律
 
-1. **EARS 用在条款层，不用在场景层**。`[REQ-*]` 条款文本用 EARS 骨架；`## Scenarios` 用 Given/When/Then。EARS 的 `When <trigger>` 与 Gherkin 的 `When` 形似而不同层——前者是需求句的从句，后者是可执行步骤，不得原样复制过去当场景步骤，场景需要具体化到可执行的输入与断言。
+1. **EARS 用在需求句层，不用在场景层**。`[REQ-*]` 条款文本与行为观察附录条目都用 EARS 骨架（句式相同，地位不同：条款是承诺，附录条目是观察——见上文 State driven 例的归位说明）；`## Scenarios` 用 Given/When/Then。EARS 的 `When <trigger>` 与 Gherkin 的 `When` 形似而不同层——前者是需求句的从句，后者是可执行步骤，不得原样复制过去当场景步骤，场景需要具体化到可执行的输入与断言。
 2. **`shall` 与 MUST 的分歧照实标注**。EARS 全部模板用 `shall`；而 29148 §5.2.4 明确【一手·文档页 11】：`Requirements are mandatory binding provisions and use 'shall'.` 以及 `It is best to avoid using the term 'must', due to potential misinterpretation as a requirement.` 本 skill 产出用 MUST/SHOULD，**依据是 agent-spec/KLL 的既有字段与 marker 格式，不是 29148 的推荐——29148 在这一点上恰恰相反**。照实标注，不伪托标准；这与 SKILL.md 对 Modality 映射表「本 skill 约定，无标准可依」的标注是同一条纪律。
 3. **Singular 与 ruleset 的张力取更严一侧**【推断，基于两处一手材料的对读】。EARS ruleset 允许 `One or many system responses`，29148 §5.2.5 Singular 要求 `a single capability, characteristic, constraint or quality factor`。两者不完全对齐时本 skill 取 29148：**一条款一断言**，多响应拆条；EARS 只借句法骨架，不引入它对多响应的宽容度。理由是重建产出要过机械门禁并逐条对照 parity，多响应条款无法被单独判定 parity class。
 
