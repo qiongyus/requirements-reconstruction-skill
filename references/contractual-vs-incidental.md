@@ -18,7 +18,7 @@
 
 判定问句：这个行为是否被文档承诺、或被测试有意锁定为可观察断言、或落在项目声明的 semver 公开面语义内？三者满足其一即可。
 
-- **正例**：README 明确承诺的输出字段集合。出处【一手，仓库内可确证】：`agent-spec` 仓库 `examples/rewrite-parity-contract.spec:39-44` 的 json 场景——`Then stdout contains only JSON` / `And the payload includes` id`,` type`, and` content``，字段集合既是场景断言（测试锁定）又是该 spec 的 `## Decisions` 承诺（`--json` and human output are separate observable modes and both must remain stable，第 16 行），双重命中，判 `parity-contractual` 无疑。
+- **正例**：README 明确承诺的输出字段集合。出处【一手，仓库内可确证】：`agent-spec` 仓库 `examples/rewrite-parity-contract.spec:39-44` 的 json 场景——`Then stdout contains only JSON` / `` And the payload includes `id`, `type`, and `content` ``，字段集合既是场景断言（测试锁定）又是该 spec 的 `## Decisions` 承诺（`--json` and human output are separate observable modes and both must remain stable，第 16 行），双重命中，判 `parity-contractual` 无疑。
 - **反例**：错误消息的具体措辞，文档只说「报错」。文档承诺的只是「这种情况下会报错」这一行为类别（存在这条错误路径），没有承诺错误消息文本的逐字内容。如果把错误消息原文当成 contractual 锁定，就是把「确实会报错」这个真契约和「报错文案怎么写」这个偶然内容混为一谈——这正是第四节 golden 测试陷阱的微缩版本。
 
 ### `parity-incidental-relied`
@@ -33,7 +33,7 @@
 判定问句：走完前四步（doc / test / semver / 依赖证据）均未命中？
 
 - **正例**（构造示例，非真实项目引用）：日志时间戳精确到毫秒还是微秒，从未被文档提及、未被任何测试断言、不在公开面承诺内，也搜不到任何用户依赖这个精度做解析的讨论——标 `parity-incidental`，重写时不必保留这个精度，记入行为观察附录即可。
-- **反例**（用于警示误判方向）：不能仅凭「实现手法看起来像随手写的」就跳过判定顺序直接标 incidental。例如某函数对返回列表做了显式 `sort.Strings` 调用，表面上像一处无人特意设计的实现选择；但如果测试专门断言了这个排序结果（且断言的是返回值这一黑盒可观察语义，不是内部状态），根据判定顺序第 2 步「测试锁定」，就应当判 `parity-contractual`，不是 `parity-incidental`。这个反例演示的是流程纪律本身：判类必须走完五步查证，不能凭代码写法的第一印象抄近路。
+- **反例**（构造示例，非真实项目引用）：不能仅凭「实现手法看起来像随手写的」就跳过判定顺序直接标 incidental。例如某函数对返回列表做了显式 `sort.Strings` 调用，表面上像一处无人特意设计的实现选择；但如果测试专门断言了这个排序结果（且断言的是返回值这一黑盒可观察语义，不是内部状态），根据判定顺序第 2 步「测试锁定」，就应当判 `parity-contractual`，不是 `parity-incidental`。这个反例演示的是流程纪律本身：判类必须走完五步查证，不能凭代码写法的第一印象抄近路。
 
 ### 纪律：宁标 `parity-incidental` 加 Open Question，不虚标 relied
 

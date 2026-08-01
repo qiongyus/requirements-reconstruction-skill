@@ -217,7 +217,7 @@ CLI 不可用时显式声明降级，等价的人工检查清单见 `references/
 ## 自检
 
 - [ ] 每条实质断言归入【事实】/【推断】/【缺口】之一
-- [ ] 所有【事实】有 `<upstream>@<baseline>:file:line`，基线全篇一致
+- [ ] 所有【事实】有 `<upstream>@<baseline>:<file>:<line>`，基线全篇一致
 - [ ] 每条需求标注了证据类别组合；confidence 与之相符
 - [ ] `## Problem` 无编造动机——每个动机陈述有出处或标【缺口】
 - [ ] modality 全部过映射表；没有 code-only 偶然行为被写成 MUST
