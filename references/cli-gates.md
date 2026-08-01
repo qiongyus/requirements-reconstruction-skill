@@ -34,7 +34,7 @@ agent-spec requirements questions --knowledge knowledge --specs specs --format j
 
 ### 门 2：`agent-spec lint-knowledge --knowledge knowledge --gate`
 
-- **挡什么**：整个 `knowledge/` 语料的内容质量与治理完整性——per-doc 规则（必备小节是否齐全、MUST 条款是否配场景、条款是否单一陈述、scenario 的 Then 是否可观察等）与 governance integrity。诊断分 `[Warning]`/`[Error]` 两级，`--gate` 的语义是「仅当存在 Error 级别发现时以非零退出」（`--help` 原文）——Warning 只汇总展示、不卡门。本机对 `agent-spec` 自身仓库 `knowledge/` 做 dogfood 验证了这条：39 个文档、576 条发现全部是 Warning，`0 errors`，`--gate` 以退出码 0 通过。
+- **挡什么**：整个 `knowledge/` 语料的内容质量与治理完整性——per-doc 规则（必备小节是否齐全、MUST 条款是否配场景、条款是否单一陈述、scenario 的 Then 是否可观察等）与 governance integrity。诊断分 `[Warning]`/`[Error]` 两级，`--gate` 的语义是「仅当存在 Error 级别发现时以非零退出」（`--help` 语义，中文转述）——Warning 只汇总展示、不卡门。本机对 `agent-spec` 自身仓库 `knowledge/` 做 dogfood 验证了这条：39 个文档、576 条发现全部是 Warning，`0 errors`，`--gate` 以退出码 0 通过。
 - **典型诊断长相**（构造了一个缺 `## Problem` 小节的候选块触发 Error）：
   ```
   knowledge/requirements/req-probe-bad-probe-bad.md: [Error] requirement-required-section — requirement is missing required `## Problem` section

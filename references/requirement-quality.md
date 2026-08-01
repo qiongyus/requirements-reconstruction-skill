@@ -6,8 +6,8 @@
 
 | 来源 | 取材方式 | 依据分级 |
 |---|---|---|
-| ISO/IEC/IEEE 29148:2018(E) 全文 PDF（`books/ISOIECIEEE 29148 ( etc.).pdf`） | Read 工具逐页视读 PDF 页 19–22（文档页 11–14）与 PDF 页 26（文档页 18），引用逐字核对 | 【一手】 |
-| 同上，§5.2.4 / §5.2.5 / §5.2.6 部分结论 | `docs/brainstorms/2026-08-01-usecase-reconstruction-feasibility.md` §2.3 已核对，**本次仍从 PDF 逐字复核**（核对记录见该文档） | 【一手】 |
+| ISO/IEC/IEEE 29148:2018(E) 全文 PDF（`books/ISOIECIEEE 29148 ( etc.).pdf`，cc-book 开发仓内） | Read 工具逐页视读 PDF 页 19–22（文档页 11–14）与 PDF 页 26（文档页 18），引用逐字核对 | 【一手】 |
+| 同上，§5.2.4 / §5.2.5 / §5.2.6 部分结论 | `docs/brainstorms/2026-08-01-usecase-reconstruction-feasibility.md`（cc-book 开发仓内）§2.3 已核对，**本次仍从 PDF 逐字复核**（核对记录见该文档） | 【一手】 |
 | EARS 五模板与句法骨架 | `curl -sL https://alistairmavin.com/ears/`（2026-08-01 取得成功，30 KB） | 【一手·作者官网】 |
 | EARS 原始论文（2009 年首次发表，官网自述） | **未取得原文** | 【无法确证】，见末节 |
 
@@ -180,7 +180,7 @@ NOTE 2 给了豁免边界【一手·同页】：
 
 ### 一致性声明（在候选块导出时一次性给出）
 
-29148 的一致性条款不可能满足：全文合规要求 §5.2.4–5.2.7 条款、Clause 7 信息项与 Clause 9/Annex A 的 required content 全部满足；裁剪合规（tailored conformance）则要求「Obtain input from all parties affected by the tailoring decisions」，逆向重建时这些「各方」不存在（【一手】，核对记录见 `docs/brainstorms/2026-08-01-usecase-reconstruction-feasibility.md` §2.3 (c)(d)）。SKILL.md 的立场与此一致：29148 用作质量判据，不声明一致性。
+29148 的一致性条款不可能满足：全文合规要求 §5.2.4–5.2.7 条款、Clause 7 信息项与 Clause 9/Annex A 的 required content 全部满足；裁剪合规（tailored conformance）则要求「Obtain input from all parties affected by the tailoring decisions」，逆向重建时这些「各方」不存在（【一手】，核对记录见 `docs/brainstorms/2026-08-01-usecase-reconstruction-feasibility.md`（cc-book 开发仓内）§2.3 (c)(d)）。SKILL.md 的立场与此一致：29148 用作质量判据，不声明一致性。
 
 纪律：**声明一次，放在候选块导出物的头部，不在每个块里重复**。逐块重复既污染 `## Open Questions`（那里只放这个块自己的不确定性），又会让真正的块级缺口被淹没。可复制文本：
 
