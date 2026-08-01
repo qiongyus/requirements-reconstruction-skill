@@ -9,11 +9,11 @@
 | # | 类型 | 怎么机械地列全 |
 |---|---|---|
 | 1 | CLI 命令×标志 | `--help` 递归展开到全部子命令（含隐藏/`deprecated` 标志）；再与 flag 解析代码（`clap`/`cobra`/`argparse` 等的声明处）做差集——help 文本手写维护的项目常年漏标新增标志 |
-| 2 | HTTP/API 端点 | 路由注册表（router 文件、`urls.py`、装饰器）逐条枚举 method + path；有 OpenAPI/proto 就以其为起点，再与实际路由注册代码做差集，抓 schema 未声明但代码已注册的端点 |
+| 2 | API 端点 | 路由注册表（router 文件、`urls.py`、装饰器）逐条枚举 method + path；有 OpenAPI/proto 就以其为起点，再与实际路由注册代码做差集，抓 schema 未声明但代码已注册的端点 |
 | 3 | 库公共 API | 语言原生的导出清单机械提取：Go 的 `pub`/大写导出、Python 的 `__all__` 与无下划线前缀符号、Rust 的 `pub fn`/`pub struct`、TS 的 `export`；不要凭文档目录猜，导出清单是唯一不遗漏的来源 |
 | 4 | 配置项 | schema 文件（JSON Schema/proto/struct tag/`Config` 结构体字段）与解析代码逐字段对照做差集——schema 有但代码从未读取、或代码读了但 schema 未声明，两个方向都要抓 |
 | 5 | 环境变量 | 全代码库 grep 取值调用点（`os.Getenv`/`process.env`/`os.environ.get` 等），逐个登记变量名与默认值；再与文档列出的环境变量表做差集 |
-| 6 | 文件格式（读与写分列） | 读路径单独列 parser 实际接受的字段集合、版本兼容范围、对未知字段的容忍度；写路径单独列 serializer 实际产出的字段集合与顺序——读写两条路径常年不对称（宽进严出或反之），必须分开机械列举，不能假定「读什么就写什么」 |
+| 6 | 文件格式（读与写） | 读、写分列机械列举：读路径单独列 parser 实际接受的字段集合、版本兼容范围、对未知字段的容忍度；写路径单独列 serializer 实际产出的字段集合与顺序——读写两条路径常年不对称（宽进严出或反之），必须分开机械列举，不能假定「读什么就写什么」 |
 | 7 | 退出码 | grep 全部退出调用点（`os.Exit`/`sys.exit`/`process.exit`/`panic` 后的进程退出路径），逐个记录触发条件；再与文档/man page 声明的退出码表做差集 |
 | 8 | stdout/stderr 语义 | grep 全部输出语句的目标流与格式（human 文本 / JSON / 结构化日志），标注是显式分流设计还是随手写哪个算哪个——这决定了它属于 `parity-contractual` 还是需要 Open Question |
 | 9 | 信号处理 | grep 信号注册调用点（`signal.Notify`/`signal.signal`/`sigaction`/框架级 graceful shutdown 钩子），逐个列出捕获的信号与处理动作（清理临时文件？flush 缓冲区？直接终止？） |
@@ -69,11 +69,11 @@ ISO/IEC/IEEE 29148:2018 §9.6.12 Functions 五个子项【一手】原文（已�
 
 对应中文措辞见同仓库 `src/main.rs` 的 `generate_rewrite_parity_template_zh` 函数：「在写代码前先梳理行为矩阵：命令 x 输出模式、local x remote、warm cache x cold start、成功 x 部分失败 x 硬失败」；具体场景实例见 `examples/rewrite-parity-contract.spec`。
 
-每组一个展开示例行（示例取自 `examples/rewrite-parity-contract.spec`，行为面矩阵里应把每个组合各自落一行，不是笼统写「支持 JSON 输出」）：
+每组一个展开示例行（示例行优先取自 `examples/rewrite-parity-contract.spec` 的实际场景文本；该 spec 未覆盖到的维度组合显式标注为缺口/待盘问，不杜撰它没有的场景。行为面矩阵里应把每个组合各自落一行，不是笼统写「支持 JSON 输出」）：
 
 | 维度组 | 展开示例行 |
 |---|---|
 | 命令×输出模式 | `get`（human 输出）与 `get --json`（结构化输出）是两个独立行为面：前者断言 stdout 含文档正文、stderr 只作诊断；后者断言 stdout **只**含 JSON 且字段集合稳定（`id`/`type`/`content`）——两者必须分别验证，不能验证了一个就假定另一个同样成立 |
 | 本地×远程 | 查找顺序 `local source -> cache -> bundled content -> remote fetch` 的每一步都是一个独立场景：本地命中时是否跳过缓存和远程；本地未命中时是否按声明顺序依次尝试，而不是直接跳到远程 |
-| 冷×热 | 冷启动（无缓存）时优先返回 bundled content、且不发起远程 HTTP 请求，是一条独立断言；热缓存命中时是否复用缓存而非重新拉取，是另一条独立断言——两条断言互不蕴含，必须分别造场景验证（`examples/rewrite-parity-contract.spec` 的 "cold start falls back to bundled content before remote fetch" 场景即此例） |
-| 成功×部分失败×硬失败 | 同一 `get` 命令下：远程 200 成功、远程返回但内容不完整（部分失败）、远程 404/超时（硬失败）是三个不同的可观察结果，硬失败场景要求「返回稳定错误，且不写入损坏缓存或错误的 freshness 元数据」——这条约束只在硬失败路径下才成立，不能用成功路径的测试覆盖率去掩盖它 |
+| 冷×热 | 冷启动端是 `examples/rewrite-parity-contract.spec` 显式断言的场景（"cold start falls back to bundled content before remote fetch"）：Given no cached doc content and bundled content for the target entry，Then bundled content is returned，And no remote HTTP request is required。**热端该 spec 未显式反向断言**——human/json 两个场景虽以「cached doc content」为前提，但断言止步于返回内容，没有一条断言「因此没有发起远程请求」；这本身就是一处值得盘问的缺口：热缓存命中时「不重新拉取」是否也需要独立验证，还是被想当然地认为伴随 cache 命中自动成立 |
+| 成功×部分失败×硬失败 | `examples/rewrite-parity-contract.spec` 只显式覆盖成功、硬失败两端：成功端见上一行（human/json 两个场景）；硬失败端是 "remote fetch failure returns a stable error" 场景——Given no cached or bundled content and the remote source returns HTTP 404，Then the command fails，And the error explains that the remote content could not be fetched。**该 spec 未覆盖部分失败**（远程返回但内容不完整/截断这类中间态）——重建时需单独盘问：上游是否存在这条路径？若存在，它被压平成与硬失败相同的错误，还是被当作成功返回了残缺数据？两种后果都不同，且都不能靠这份 spec 的测试覆盖率去反推「上游不存在这条路径」 |
