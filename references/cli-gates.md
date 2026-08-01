@@ -44,6 +44,9 @@ agent-spec requirements questions --knowledge knowledge --specs specs --format j
   ```
   退出码 2。`--knowledge` 指向不存在的目录时也会经同一条诊断通道报出（`knowledge-parse-error — cannot parse knowledge doc: knowledge root does not exist or is not a directory`），是「路径配错」这类环境错误与「内容有缺陷」这类真实发现共用的判定路径，看到 Error 先确认目录本身存在。
 - **失败了回哪一步**：视 rule id 决定——`requirement-required-section` 一类结构缺陷回 Step 5（补齐字段，对照候选块模板）；`requirement-must-needs-scenario`、`requirement-weak-then`、`requirement-single-statement` 一类内容缺陷回 Step 3（逐面盘问补场景/拆条款）或 Step 4（三源对照重新核证措辞）。
+- **两类预期内的 Warning 噪声，不要当成自己写错**（dogfood 实测，10 个候选块共 28 条 Warning、0 Error）：
+  - `requirement-weak-then — scenario Then step is not clearly observable`：该规则的可观察性判据是英文启发式，而本 skill 要求中文写作、模板也背书中文关键词，于是**每一条中文的退出码断言**（`那么 退出码是 0`）都会被报一次——本次 28 条里有 11 条是它。退出码是模板明列的合法可观察断言，这类 Warning 属工具的语言覆盖缺口，不卡门，不必为消除它把场景改写成英文。真正要认真对待的 `requirement-weak-then` 是断言了内部状态的那种（没过测试直译闸门），两者靠读 Warning 引用的那句 Then 文本区分。
+  - `requirement-single-statement` / `requirement-compound-clause`：条款里出现两个 MUST（典型是「MUST 写 stdout **且** MUST NOT 写文件」这种 parity 常见的成对断言）就会各报一次。这两条**不是**噪声，与 `requirement-quality.md` 第一节 Singular（一条款一断言，多响应拆条）同向——按它拆条即可消除，dogfood 实测拆条后同一份内容可做到 0 findings。
 
 ### 门 3：`agent-spec requirements graph --knowledge knowledge --format json --gate`
 
