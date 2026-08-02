@@ -10,7 +10,7 @@
 源项目（上游仓库，钉死基线版本）
    │
    ▼  阶段 A：需求重建（本 skill，Step 0–8）
-docs/reconstruction/
+docs/reconstruction/requirements/   （docs/reconstruction/ 为三个重建 skill 共用根）
    ├── behavior-surface-matrix.md   行为面×证据源矩阵
    ├── findings.md                  尖锐发现清单（三源冲突、静默契约…）
    └── candidate-blocks.md          Candidate Requirement Blocks
@@ -61,9 +61,9 @@ Step 1–5 无需干预，agent 会：跑 `scripts/inventory_behavior_evidence.s
 
 | 产出 | 路径（重写仓库内） | 给谁看 |
 |---|---|---|
-| 行为面×证据源矩阵 | `docs/reconstruction/behavior-surface-matrix.md` | 人（评估覆盖面） |
-| 发现清单 | `docs/reconstruction/findings.md` | **人（先读这个）** |
-| 候选块文件 | `docs/reconstruction/candidate-blocks.md` | 机器（门 1 的输入） |
+| 行为面×证据源矩阵 | `docs/reconstruction/requirements/behavior-surface-matrix.md` | 人（评估覆盖面） |
+| 发现清单 | `docs/reconstruction/requirements/findings.md` | **人（先读这个）** |
+| 候选块文件 | `docs/reconstruction/requirements/candidate-blocks.md` | 机器（门 1 的输入） |
 
 **先读 `findings.md` 的前两屏**——skill 强制把最危险的发现（文档与代码矛盾、静默契约、被测试锁死的偶然行为）放在那里。里面每条三源冲突都是留给你裁决的：以文档为准还是以代码为准，skill 不代答。
 
@@ -73,7 +73,7 @@ Step 1–5 无需干预，agent 会：跑 `scripts/inventory_behavior_evidence.s
 
 ```bash
 agent-spec init --workspace          # 仅首次：建 knowledge/ 骨架，无通过/失败语义
-agent-spec requirements import --from docs/reconstruction/candidate-blocks.md   # 门 1：结构可解析
+agent-spec requirements import --from docs/reconstruction/requirements/candidate-blocks.md   # 门 1：结构可解析
 agent-spec lint-knowledge --gate                                                # 门 2：内容质量（仅 Error 卡门）
 agent-spec requirements graph --format json --gate                              # 门 3：依赖图无环、无悬空
 agent-spec requirements questions --format json                                 # 门 4：产出访谈议程（不判负）
@@ -129,7 +129,7 @@ agent-spec requirements trace REQ-XXX                 # 需求级证据链回查
 
 - **CLI 不可用**：四道门各有等价人工检查（清单在 `references/cli-gates.md` §三），但产出头部必须带 `【未过机械门禁】` 声明——这是硬要求。
 - **浅克隆**：`git log`/blame 类证据会缺失，Step 1 脚本会检测；命中就在产出里标注历史截断，别让【事实】引用残缺历史。
-- **大型项目**：不要指望一轮盘完。标准档以上必须分行为面/分模块推进，并强制声明覆盖率与未覆盖行为面——「重建了需求」这种笼统宣称是被 skill 自检明文禁止的。
+- **大型项目**：不要指望一轮盘完。标准档以上必须分行为面/分模块推进，并强制声明覆盖率与未覆盖行为面——「重建了需求」这种笼统宣称是被 skill 自检明文禁止的。多轮推进时先跑 `architecture-reconstruction` 得到 AD 作调度输入,再落轮次计划——轮的定义、排序依据、id 防撞纪律见 skill 内 `references/multi-round-planning.md`。
 - **验证别停在门禁绿灯**：绿灯只证明自洽。完整档要求做上游对照（跑上游测试套件对差异）与探针测试（挑 `code-only` 断言在源项目基线上写测试验证）——后者是把 `code-only` 升格为可验证事实的唯一机械手段。
 
 ## 9. 端到端实例（v0.1.0 dogfood 摘要）

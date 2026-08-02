@@ -222,7 +222,7 @@ CLI 不可用时显式声明降级，等价的人工检查清单见 `references/
 | **标准** | 子系统级重写 | 矩阵 + 发现清单 + Candidate Requirement Blocks + 门禁通过 |
 | **完整** | 整项目对等重写 | 标准档 + 探针测试验证 + 上游对照差异报告 |
 
-**规模警戒（硬规则）**：大型项目上行为面遗漏是系统性的。标准档以上必须分行为面/分模块推进，并强制声明覆盖率与未覆盖行为面——不允许笼统宣称「重建了需求」。
+**规模警戒（硬规则）**：大型项目上行为面遗漏是系统性的。标准档以上必须分行为面/分模块推进，并强制声明覆盖率与未覆盖行为面——不允许笼统宣称「重建了需求」。行为面总量远超单轮容量时按多轮推进,轮的定义、排序依据、id 防撞与 `architecture-reconstruction` AD 的衔接规则见 `references/multi-round-planning.md`。
 
 ## 自检
 
@@ -259,6 +259,7 @@ CLI 不可用时显式声明降级，等价的人工检查清单见 `references/
 - `references/contractual-vs-incidental.md` — parity 分类判据、modality 映射表、Hyrum 处置、golden 测试陷阱
 - `references/requirement-quality.md` — ISO 29148 §5.2 条款质量特征 + EARS 句式，依据逐条标注【一手】/【二手】，确证不了的标「无法确证」
 - `references/cli-gates.md` — agent-spec CLI 门禁序列、降级人工清单、draft-specs 交接要求
+- `references/multi-round-planning.md` — 大型项目多轮重建的规划:轮的定义、排序依据、AD 作调度输入的纪律、轮次计划文档结构
 
 模板：`assets/behavior-surface-matrix.md`（行为面×证据源矩阵）、`assets/candidate-block-template.md`（Candidate Requirement Block）。脚本：`scripts/inventory_behavior_evidence.sh`（Step 1 证据清点）。
 
