@@ -2,7 +2,7 @@
 
 从既有开源项目/代码库的源码、测试与文档**重建结构化需求**，产出 agent-spec KLL 层的 Candidate Requirement Blocks——经确定性门禁与人工治理后，作为重写工作的受治理真相层。
 
-这是一个中文个人 skill。给 agent 读的正文在 `SKILL.md`；本 README 面向浏览仓库的人，介绍定位、内容与安装方式。
+这是一个中文个人 skill。给 agent 读的正文在 `SKILL.md`；本 README 面向浏览仓库的人，介绍定位、内容与安装方式。**结合 agent-spec 的端到端使用说明（从触发到 Task Contract 落地）见 `USAGE.md`。**
 
 ## 定位
 
