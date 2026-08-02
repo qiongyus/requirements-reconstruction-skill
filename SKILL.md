@@ -180,13 +180,13 @@ doc vs code vs test 逐面对照，冲突单列成漂移发现（发现 #1 / #2�
 
 按内容项表 + modality 映射 + parity tags + confidence 判据逐块起草。`agent-spec discover --from-codebase` 的机械骨架（每个测试名一个占位 scenario，无 AI）可作场景种子，过测试直译闸门后细化。
 
-产出分两类落盘：**分析材料**（行为面矩阵、发现清单）进重写仓库 `docs/`；**候选需求块**落为重写仓库 `docs/` 下的候选块文件，作为 `requirements import --from` 的输入。约定路径（模板的 `source` 属性与门 1 的 `--from` 都指向它们，别处不再重复给）：
+产出分两类落盘：**分析材料**（行为面矩阵、发现清单）进重写仓库 `docs/`；**候选需求块**落为重写仓库 `docs/` 下的候选块文件，作为 `requirements import --from` 的输入。约定路径（模板的 `source` 属性与门 1 的 `--from` 都指向它们，别处不再重复给。`docs/reconstruction/` 是三个重建 skill 的共用约定根，各占一个子目录：本 skill 落 `requirements/`、`architecture-reconstruction` 落 `architecture/`、`usecase-reconstruction` 落 `use-cases/`。若重建对象是源仓库内的子项目/子目录，在约定根后插一级目标标识：`docs/reconstruction/<target-slug>/requirements/…`，`<target-slug>` 取目标相对源仓库根的路径、`/` 换成 `-`，如 `packages/core` → `packages-core`；整仓重建不加这一级）：
 
 | 产出 | 约定路径 |
 |---|---|
-| 行为面×证据源矩阵 | `docs/reconstruction/behavior-surface-matrix.md` |
-| 发现清单（含行为观察附录） | `docs/reconstruction/findings.md` |
-| 候选块文件 | `docs/reconstruction/candidate-blocks.md` |
+| 行为面×证据源矩阵 | `docs/reconstruction/requirements/behavior-surface-matrix.md` |
+| 发现清单（含行为观察附录） | `docs/reconstruction/requirements/findings.md` |
+| 候选块文件 | `docs/reconstruction/requirements/candidate-blocks.md` |
 
 **发现清单的必备结构**（无独立模板，照此四段写）：① 头部三行——源项目、基线、分流，外加一句「只读前两屏也要看到的 N 条」指向最危险的发现；② 七类逐条展开，每条给 doc/code/test 各自出处、探针结果（有则给）、**「谁会因此做出错误判断」**、处置去向；③ **逐类扫描的否定结论**——某类零命中要写明「已扫过、零命中及其理由」，不能靠沉默让读者以为是遗漏；④ **行为观察附录**——`parity-incidental` 的行为按 Modality 映射表不写成条款，全部落在这一节，用 EARS 句式写成「观察到什么」，**不进 KLL、不参与门禁、不参与重写验收**。
 

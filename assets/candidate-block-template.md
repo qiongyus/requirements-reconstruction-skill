@@ -7,14 +7,14 @@
 - **marker**：块必须以起始 marker 开头、以结束 marker 收尾，起始 marker 携带 `id`/`title`/`tags`/`source` 四个属性；两个 marker 缺一即被门 1（`requirements import`）判为结构不可解析。「填好的完整示例块」与「空骨架块」都是各自独立、起止 marker 齐全、可单点复制直接使用的完整块——不要把两者拼接使用（此说明刻意不在 prose 里重复贴出完整 marker 语法，只在下方两个代码块里各出现一次，防止本文件出现第三处可被机械抽取工具误认作独立块起点的文本）。
 - **id 命名**：`REQ-<行为面>-<断言>`，全大写、连字符分隔，例如 `REQ-FETCH-JSON-MODE`。同一行为面下的多条断言用不同的 `<断言>` 段区分，不要用序号占位。
 - **tags**：至少携带一个行为面类别标签（如 `cli`）；对等重写分流下必须再携带 parity class 标签之一：`parity-contractual` / `parity-incidental-relied` / `parity-incidental`（与 `SKILL.md`「契约还是偶然」一节三值逐字一致）。重设计分流不激活 parity 分类，不出现 parity 标签。
-- **source**：指向本次重建的行为面×证据源矩阵文件（通常是 `docs/reconstruction/behavior-surface-matrix.md`），不是指向上游仓库——上游出处走 `## Source Trace`。
+- **source**：指向本次重建的行为面×证据源矩阵文件（通常是 `docs/reconstruction/requirements/behavior-surface-matrix.md`），不是指向上游仓库——上游出处走 `## Source Trace`。
 - **必备节，缺一不可**：`## Problem` / `## Requirements` / `## Scenarios` / `## Dependencies` / `## Source Trace` / `## Open Questions`，顺序与下方示例一致。门 2（`lint-knowledge --gate`）对缺失必备节判 Error。
 - **`## Requirements` 条款**：`[REQ-<id 同上>] <EARS 句式条款>`，modality（MUST/SHOULD/MAY）按 `SKILL.md`「Modality 映射表」推导，不凭手感选。**一条款一断言**：一个块里可以有多条 `[REQ-<id 同上>]` 行（id 相同，门 3 实测按多条 clause 正确解析），出现第二个 MUST/SHOULD 就另起一行，不要用 and 把两个断言并进一句——并写会被门 2 报 `requirement-single-statement` 与 `requirement-compound-clause` 两条 Warning，也违反 `references/requirement-quality.md` 第一节的 Singular。对等重写里最容易踩的是「MUST 写 stdout **且** MUST NOT 写文件」这种成对断言，下方示例块演示的正是拆开写。
 - **`## Scenarios`**：`场景:` 起头一行给场景名，步骤用中文关键词`假设`/`当`/`那么`/`并且`（Given/When/Then/And 语义，本机 `agent-spec requirements graph` 实测可正确解析这组中文关键词，见下方示例）；断言必须是可观察行为（stdout/stderr/退出码/持久化外部效果），不得断言内部状态。对等重写分流下，parity 维度组合（命令×输出模式、本地×远程、冷×热、成功×部分失败×硬失败）要落进具体场景的前提与断言里，不能只在 `## Problem` 里提一句自然语言描述（见 `references/cli-gates.md`「交接要求」第 1 点）。
 - **confidence 的字段落点**：`confidence: high|medium|low` 写在 `## Source Trace` 节的**末行**，不单独占一个 `##` 小节——`requirements import` 只按 marker 与既定的六个必备节解析结构，独立的 `## Confidence` 小节不在其识别范围内，会被判为结构外内容。confidence 取值按 `references/evidence-classes.md`「证据类别组合与 confidence 推导表」机械查表，不凭手感在 medium/high 之间挑一个更好看的值。
 - **`## Source Trace` 条目格式**：`<upstream>@<baseline>:<file>:<line>`，前缀带三级标注（【事实】/【推断】/【缺口】）与证据类别组合（`test+code+doc` / `test+code` / `code+doc` / `code-only` / `doc-only` 等，写法与 `evidence-classes.md` 逐字一致）。
 - **`None.`**：仅在该节确实无内容时使用（例如某条需求确无依赖、确无未决问题）；只要有一条真实内容，就不得用 `None.` 顶替。
-- **空骨架块的占位值写法（本机实测逐属性核验）**：`id` 必须是 ASCII 字母数字段以单个连字符分隔（门 1 硬校验，实测尖括号/中文会直接报错 `invalid knowledge id`），骨架用 `REQ-YOUR-BEHAVIOR-ASSERTION` 这类全大写占位词而非尖括号；`title`（带引号）、`tags`（不带引号，但**不得含空格**——不带引号的属性值按空白分词，空格会把占位文字截断）、`source`（带引号）三者门 1 均不做字符校验，可用中文尖括号占位提示视觉上标出待替换处，骨架分别用 `"<替换为简短标题>"`、`<行为面类别>,<parity-class三选一>`、`"<按实际项目替换：通常是docs/reconstruction/behavior-surface-matrix.md>"`。
+- **空骨架块的占位值写法（本机实测逐属性核验）**：`id` 必须是 ASCII 字母数字段以单个连字符分隔（门 1 硬校验，实测尖括号/中文会直接报错 `invalid knowledge id`），骨架用 `REQ-YOUR-BEHAVIOR-ASSERTION` 这类全大写占位词而非尖括号；`title`（带引号）、`tags`（不带引号，但**不得含空格**——不带引号的属性值按空白分词，空格会把占位文字截断）、`source`（带引号）三者门 1 均不做字符校验，可用中文尖括号占位提示视觉上标出待替换处，骨架分别用 `"<替换为简短标题>"`、`<行为面类别>,<parity-class三选一>`、`"<按实际项目替换：通常是docs/reconstruction/requirements/behavior-surface-matrix.md>"`。
 - **本文件的验证状态**：下方「填好的完整示例块」与「空骨架块」都是各自完整、起止 marker 齐全的独立块，`references/cli-gates.md`「门禁序列」的三条命令已对**两块合并抽取后的结果**联合实测——用扫描本文件全部 marker 区间的机械抽取方式一次即可同时取出两块；`requirements import` 两块都成功导入、无报错；`lint-knowledge --gate` 在两份文档上共报 2 条 Warning、0 Error，退出码 0（**2 条全部来自骨架块**的占位文本：`requirement-bcp14-keyword`/`requirement-weak-then`，均为预期——占位内容本就不构成合法条款，但不影响 Warning 级别的 gate 判定；**填好的示例块 0 findings**——2026-08-01 dogfood 复测发现它原先的单条复合条款会触发 `requirement-single-statement`/`requirement-compound-clause` 各一条，已按上文「一条款一断言」拆成两条并实测归零）；`requirements graph --gate` 退出码 0、`parse_errors` 为空（骨架块因保留占位式 `## Open Questions` 触发一条 `blocked-open-questions` warning 级 diagnostic，同样不卡门）。
 
 ## 填好的完整示例块
@@ -22,7 +22,7 @@
 以下示例块已实测通过本机 `agent-spec 1.1.0` 的 `requirements import` + `lint-knowledge --gate` + `requirements graph --gate`（三条命令见 `references/cli-gates.md`「门禁序列」），可直接照此格式复制填写：
 
 ```md
-<!-- agent-spec:requirement id=REQ-FETCH-JSON-MODE title="fetch --json 输出契约" tags=cli,parity-contractual source=docs/reconstruction/behavior-surface-matrix.md -->
+<!-- agent-spec:requirement id=REQ-FETCH-JSON-MODE title="fetch --json 输出契约" tags=cli,parity-contractual source=docs/reconstruction/requirements/behavior-surface-matrix.md -->
 ## Problem
 
 上游 CLI 的 `--json` 模式被文档承诺且有 e2e 测试锁定，属对等重写必须保留的输出契约。
@@ -64,7 +64,7 @@ None.
 自持完整的 marker 块，单点复制即可用：`id`/`tags` 用 ASCII 占位词（满足门 1 的字符校验，实测通过）、`title`/`source` 用中文尖括号占位提示（门 1 不校验这两处字符集，实测通过），六个必备节留占位内容，替换完占位后即为可导入的候选块——不需要从别处拼接起止行：
 
 ```md
-<!-- agent-spec:requirement id=REQ-YOUR-BEHAVIOR-ASSERTION title="<替换为简短标题>" tags=<行为面类别>,<parity-class三选一> source="<按实际项目替换：通常是docs/reconstruction/behavior-surface-matrix.md>" -->
+<!-- agent-spec:requirement id=REQ-YOUR-BEHAVIOR-ASSERTION title="<替换为简短标题>" tags=<行为面类别>,<parity-class三选一> source="<按实际项目替换：通常是docs/reconstruction/requirements/behavior-surface-matrix.md>" -->
 ## Problem
 
 <这条需求要解决/锁定什么；动机陈述必须附出处，无出处写【缺口】>
