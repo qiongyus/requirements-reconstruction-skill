@@ -67,8 +67,4 @@ ln -s ../../.agents/skills/requirements-reconstruction ~/.claude/skills/requirem
 
 ## 验证状态
 
-v0.1.0 已在真实项目 [chmln/sd](https://github.com/chmln/sd)（v1.1.0-4-g44febdf）上以零上下文姿态完整走通 Step 0–8：四道门禁全绿，产出 10 块候选需求；并抓到两条「读文档照抄必踩」的头等发现——`--max-replacements` 的文档语义（per file）与代码默认行为（per line）三处矛盾且测试全部绕开，以及 CHANGELOG 承诺的「原子写保留属主」实为未参与编译的死代码。验收报告在开发仓 cc-book 的 `docs/validation/`（cc-book 开发仓内）。
-
-## 开发
-
-开发于 cc-book 仓库 `skills/requirements-reconstruction/`（独立 git 仓库），发布即 rsync 到 `~/.agents/skills/`。设计文档与实施计划在 cc-book 的 `docs/brainstorms/`、`docs/plans/`（cc-book 开发仓内）。
+v0.1.0 已在真实项目 [chmln/sd](https://github.com/chmln/sd)（v1.1.0-4-g44febdf）上以零上下文姿态完整走通 Step 0–8：四道门禁全绿，产出 10 块候选需求；并抓到两条「读文档照抄必踩」的头等发现——`--max-replacements` 的文档语义（per file）与代码默认行为（per line）三处矛盾且测试全部绕开，以及 CHANGELOG 承诺的「原子写保留属主」实为未参与编译的死代码。
