@@ -64,7 +64,3 @@ ln -s ../../.agents/skills/requirements-reconstruction ~/.claude/skills/requirem
 ```
 
 依赖：`agent-spec` CLI（门禁与导入；不可用时 skill 内有显式降级路径，见 `references/cli-gates.md`）。
-
-## 验证状态
-
-v0.1.0 已在真实项目 [chmln/sd](https://github.com/chmln/sd)（v1.1.0-4-g44febdf）上以零上下文姿态完整走通 Step 0–8：四道门禁全绿，产出 10 块候选需求；并抓到两条「读文档照抄必踩」的头等发现——`--max-replacements` 的文档语义（per file）与代码默认行为（per line）三处矛盾且测试全部绕开，以及 CHANGELOG 承诺的「原子写保留属主」实为未参与编译的死代码。
