@@ -6,7 +6,7 @@
 
 | 来源 | 取材方式 | 依据分级 |
 |---|---|---|
-| ISO/IEC/IEEE 29148:2018(E) 全文 PDF（`books/ISOIECIEEE 29148 ( etc.).pdf`，cc-book 开发仓内） | Read 工具逐页视读 PDF 页 19–22（文档页 11–14）与 PDF 页 26（文档页 18），引用逐字核对 | 【一手】 |
+| ISO/IEC/IEEE 29148:2018(E) 全文 PDF（`materials/standards/iso-29148/iso-iec-ieee-29148-2018.pdf`，cc-book 开发仓内） | Read 工具逐页视读 PDF 页 19–22（文档页 11–14）与 PDF 页 26（文档页 18），引用逐字核对 | 【一手】 |
 | 同上，§5.2.4 / §5.2.5 / §5.2.6 部分结论 | `docs/brainstorms/2026-08-01-usecase-reconstruction-feasibility.md`（cc-book 开发仓内）§2.3 已核对，**本次仍从 PDF 逐字复核**（核对记录见该文档） | 【一手】 |
 | EARS 五模板与句法骨架 | `curl -sL https://alistairmavin.com/ears/`（2026-08-01 取得成功，30 KB） | 【一手·作者官网】 |
 | EARS 原始论文（2009 年首次发表，官网自述） | **未取得原文** | 【无法确证】，见末节 |

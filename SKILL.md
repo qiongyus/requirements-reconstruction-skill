@@ -263,4 +263,4 @@ CLI 不可用时显式声明降级，等价的人工检查清单见 `references/
 
 模板：`assets/behavior-surface-matrix.md`（行为面×证据源矩阵）、`assets/candidate-block-template.md`（Candidate Requirement Block）。脚本：`scripts/inventory_behavior_evidence.sh`（Step 1 证据清点）。
 
-若当前项目存在实践规范库（常见路径 `standards/01-requirements/`，或 CLAUDE.md 中声明的 `$STD`），一并检索并在产出中标注其条目 ID，使结论可回溯到项目自己的规范依据。不存在则静默跳过——本 skill 自身完备，不依赖它。
+若当前项目存在实践规范库（常见路径 `norms/01-requirements/`，或 CLAUDE.md 中声明的 `$STD`），一并检索并在产出中标注其条目 ID，使结论可回溯到项目自己的规范依据。不存在则静默跳过——本 skill 自身完备，不依赖它。
